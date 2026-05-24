@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const story = [
   {
@@ -21,42 +21,47 @@ const story = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    transition: { duration: 0.8, ease: [0.2, 0.8, 0.2, 1] } 
+  }
+};
+
 export default function OurStory() {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
-    );
-    const els = ref.current?.querySelectorAll('.section-reveal') || [];
-    els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
       id="our-story"
-      ref={ref}
       style={{
         background: '#faf7f4',
         padding: 'clamp(70px,10vw,120px) 20px',
       }}
     >
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        style={{ maxWidth: '900px', margin: '0 auto' }}
+      >
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '70px' }}>
-          <p className="section-reveal section-subtitle" style={{ marginBottom: '12px' }}>How it all began</p>
-          <h2 className="section-reveal section-title" style={{ transitionDelay: '0.1s' }}>Our Story</h2>
-          <div className="section-reveal ornament" style={{ marginTop: '20px', transitionDelay: '0.2s' }}>
+          <motion.p variants={itemVariants} className="section-subtitle" style={{ marginBottom: '12px' }}>How it all began</motion.p>
+          <motion.h2 variants={itemVariants} className="section-title">Our Story</motion.h2>
+          <motion.div variants={itemVariants} className="ornament" style={{ marginTop: '20px' }}>
             <span style={{ color: '#c9a96e', fontSize: '1rem' }}>✦</span>
-          </div>
+          </motion.div>
         </div>
 
         {/* Timeline */}
@@ -78,11 +83,10 @@ export default function OurStory() {
           {story.map((item, i) => {
             const isLeft = i % 2 === 0;
             return (
-              <div
+              <motion.div
                 key={i}
-                className="section-reveal"
+                variants={itemVariants}
                 style={{
-                  transitionDelay: `${i * 0.15}s`,
                   display: 'flex',
                   justifyContent: isLeft ? 'flex-start' : 'flex-end',
                   marginBottom: '48px',
@@ -102,7 +106,7 @@ export default function OurStory() {
                   }}
                 >
                   {/* Year badge */}
-                  <div
+                  {/* <div
                     style={{
                       position: 'absolute',
                       top: '24px',
@@ -123,11 +127,11 @@ export default function OurStory() {
                     className="hidden md:flex"
                   >
                     {item.year}
-                  </div>
+                  </div> */}
 
                   {/* Mobile year */}
                   <div
-                    className="md:hidden"
+                    className="md:flex"
                     style={{
                       fontFamily: "'Montserrat', sans-serif",
                       fontSize: '0.6rem',
@@ -170,11 +174,11 @@ export default function OurStory() {
                     {item.desc}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

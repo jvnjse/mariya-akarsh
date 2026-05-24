@@ -1,18 +1,25 @@
-import { useEffect, useRef } from 'react';
 import { outdoorImages, traditionalImages } from '../assets/images';
+import { motion } from 'framer-motion';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    transition: { duration: 0.8, ease: [0.2, 0.8, 0.2, 1] } 
+  }
+};
 
 export default function CouplePortrait() {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')),
-      { threshold: 0.1 }
-    );
-    ref.current?.querySelectorAll('.section-reveal').forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   // Pick 3 hero portrait images across different shoots
   const featured = [
     outdoorImages[4],   // intimate/leaning
@@ -22,7 +29,6 @@ export default function CouplePortrait() {
 
   return (
     <section
-      ref={ref}
       style={{
         background: '#faf7f4',
         padding: 'clamp(60px,8vw,100px) 0 0',
@@ -30,16 +36,22 @@ export default function CouplePortrait() {
       }}
     >
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '52px', padding: '0 24px' }}>
-        <p className="section-reveal section-subtitle" style={{ marginBottom: '12px' }}>Akarsh &amp; Mariya</p>
-        <h2 className="section-reveal section-title" style={{ transitionDelay: '0.1s' }}>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        style={{ textAlign: 'center', marginBottom: '52px', padding: '0 24px' }}
+      >
+        <motion.p variants={itemVariants} className="section-subtitle" style={{ marginBottom: '12px' }}>Akarsh &amp; Mariya</motion.p>
+        <motion.h2 variants={itemVariants} className="section-title">
           We're Tying the Knot
-        </h2>
-        <div className="section-reveal ornament" style={{ marginTop: '20px', transitionDelay: '0.2s' }}>
+        </motion.h2>
+        <motion.div variants={itemVariants} className="ornament" style={{ marginTop: '20px' }}>
           <span style={{ color: '#c9a96e', fontSize: '1rem' }}>✦</span>
-        </div>
-        <p
-          className="section-reveal"
+        </motion.div>
+        <motion.p
+          variants={itemVariants}
           style={{
             marginTop: '20px',
             fontFamily: "'Cormorant Garamond', serif",
@@ -50,34 +62,36 @@ export default function CouplePortrait() {
             maxWidth: '560px',
             margin: '20px auto 0',
             fontWeight: 300,
-            transitionDelay: '0.3s',
           }}
         >
           Two hearts, one beautiful journey. We are so excited to celebrate the
           beginning of forever with the people we love most.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* 3-panel photo strip */}
-      <div
-        className="section-reveal"
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: 0,
-          transitionDelay: '0.4s',
         }}
       >
         {featured.map((img, i) => (
-          <div
+          <motion.div
             key={i}
+            variants={itemVariants}
             style={{
               position: 'relative',
               overflow: 'hidden',
               height: 'clamp(320px, 50vw, 620px)',
             }}
           >
-            <img
+            <motion.img
               src={img.src}
               alt={img.alt}
               style={{
@@ -86,11 +100,10 @@ export default function CouplePortrait() {
                 objectFit: 'cover',
                 objectPosition: 'center',
                 display: 'block',
-                transition: 'transform 0.8s ease',
               }}
               loading="lazy"
-              onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.04)')}
-              onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+              whileHover={{ scale: 1.04 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
             />
             {/* Thin divider between panels */}
             {i < 2 && (
@@ -99,16 +112,22 @@ export default function CouplePortrait() {
                 width: '1px', background: 'rgba(201,169,110,0.4)',
               }}/>
             )}
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Quote strip below photos */}
-      <div style={{
-        background: 'linear-gradient(135deg, #3d2b1f, #5a3e30)',
-        padding: 'clamp(24px,4vw,40px) 24px',
-        textAlign: 'center',
-      }}>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
+        style={{
+          background: 'linear-gradient(135deg, #3d2b1f, #5a3e30)',
+          padding: 'clamp(24px,4vw,40px) 24px',
+          textAlign: 'center',
+        }}
+      >
         <p style={{
           fontFamily: "'Great Vibes', cursive",
           fontSize: 'clamp(1.8rem,4vw,2.8rem)',
@@ -117,7 +136,7 @@ export default function CouplePortrait() {
         }}>
           "From this moment, every moment is ours."
         </p>
-      </div>
+      </motion.div>
     </section>
   );
 }

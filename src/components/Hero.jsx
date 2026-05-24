@@ -1,6 +1,25 @@
-import { useEffect, useRef } from 'react';
-import { galleryImages, outdoorImages } from '../assets/images';
+import { useRef } from 'react';
+import { motion } from 'framer-motion';
+import { outdoorImages } from '../assets/images';
 import logoImg from '../assets/logo.png';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    transition: { duration: 1, ease: [0.2, 0.8, 0.2, 1] } 
+  }
+};
 
 export default function Hero() {
   const ref = useRef(null);
@@ -9,11 +28,6 @@ export default function Hero() {
   const bgPhoto  = outdoorImages[0]?.src;
   // Portrait shot for the right panel
   const portrait = outdoorImages[2]?.src;
-
-  useEffect(() => {
-    const els = ref.current?.querySelectorAll('[data-reveal]') ?? [];
-    els.forEach((el, i) => setTimeout(() => el.classList.add('visible'), 300 + i * 180));
-  }, []);
 
   return (
     <section
@@ -28,10 +42,8 @@ export default function Hero() {
           position: 'absolute', inset: 0,
           backgroundImage: bgPhoto ? `url(${bgPhoto})` : 'none',
           backgroundSize: 'cover',
-          transform: 'scale(1.05)',
-          transition: 'transform 8s ease-out',
+          animation: 'kenBurns 25s ease-in-out infinite alternate',
         }}
-        ref={(el) => { if (el) setTimeout(() => { el.style.transform = 'scale(1)'; }, 100); }}
       />
 
       {/* ── Gradient overlays ── */}
@@ -41,30 +53,21 @@ export default function Hero() {
       }}/>
 
       {/* ── Content ── */}
-      <div style={{
-        position: 'relative', zIndex: 2,
-        width: '100%', display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        padding: 'clamp(100px,14vw,160px) 24px clamp(80px,10vw,120px)',
-        textAlign: 'center',
-      }}>
-
-        {/* Logo above names */}
-        {/* <div data-reveal className="section-reveal" style={{ marginBottom: '24px' }}>
-          <img
-            src={logoImg}
-            alt="A & M"
-            style={{
-              height: 'clamp(70px,10vw,110px)',
-              width: 'auto',
-              filter: 'brightness(0) invert(1)',
-              opacity: 0.92,
-            }}
-          />
-        </div> */}
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        style={{
+          position: 'relative', zIndex: 2,
+          width: '100%', display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          padding: 'clamp(100px,14vw,160px) 24px clamp(80px,10vw,120px)',
+          textAlign: 'center',
+        }}
+      >
 
         {/* Pre-title */}
-        <div data-reveal className="section-reveal" style={{
+        <motion.div variants={itemVariants} style={{
           fontFamily: "'Montserrat', sans-serif",
           fontSize: '0.62rem',
           letterSpacing: '0.45em',
@@ -73,10 +76,10 @@ export default function Hero() {
           marginBottom: '20px',
         }}>
           Together with their families
-        </div>
+        </motion.div>
 
         {/* Names */}
-        <div data-reveal className="section-reveal">
+        <motion.div variants={itemVariants}>
           <h1 style={{
             fontFamily: "'Great Vibes', cursive",
             fontSize: 'clamp(5rem, 14vw, 10rem)',
@@ -87,9 +90,9 @@ export default function Hero() {
           }}>
             Akarsh
           </h1>
-        </div>
+        </motion.div>
 
-        <div data-reveal className="section-reveal" style={{
+        <motion.div variants={itemVariants} style={{
           fontFamily: "'Cormorant Garamond', serif",
           fontSize: 'clamp(1.4rem, 4vw, 2.4rem)',
           color: '#c9a96e',
@@ -99,9 +102,9 @@ export default function Hero() {
           margin: '2px 0',
         }}>
           &amp;
-        </div>
+        </motion.div>
 
-        <div data-reveal className="section-reveal">
+        <motion.div variants={itemVariants}>
           <h1 style={{
             fontFamily: "'Great Vibes', cursive",
             fontSize: 'clamp(5rem, 14vw, 10rem)',
@@ -112,10 +115,10 @@ export default function Hero() {
           }}>
             Mariya
           </h1>
-        </div>
+        </motion.div>
 
         {/* Gold line ornament */}
-        <div data-reveal className="section-reveal" style={{
+        <motion.div variants={itemVariants} style={{
           display: 'flex', alignItems: 'center', gap: '16px',
           margin: '28px 0 20px',
         }}>
@@ -124,10 +127,10 @@ export default function Hero() {
             <path d="M7 0L8.3 5.2 14 7 8.3 8.8 7 14 5.7 8.8 0 7 5.7 5.2Z"/>
           </svg>
           <div style={{ width: '60px', height: '1px', background: 'rgba(201,169,110,0.7)' }}/>
-        </div>
+        </motion.div>
 
         {/* Date */}
-        <div data-reveal className="section-reveal">
+        <motion.div variants={itemVariants}>
           <p style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontSize: 'clamp(1.1rem, 3vw, 1.7rem)',
@@ -147,21 +150,10 @@ export default function Hero() {
           }}>
             Celebrating Love · Joy · Forever
           </p>
-        </div>
-
-        {/* CTA */}
-        {/* <div data-reveal className="section-reveal" style={{ marginTop: '44px' }}>
-          <button
-            className="btn-primary"
-            style={{ borderRadius: '0', letterSpacing: '0.28em' }}
-            onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            RSVP Now
-          </button>
-        </div> */}
+        </motion.div>
 
         {/* Scroll cue */}
-        <div data-reveal className="section-reveal" style={{ marginTop: '60px' }}>
+        <motion.div variants={itemVariants} style={{ marginTop: '60px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
             <p style={{
               fontFamily: "'Montserrat',sans-serif", fontSize: '0.55rem',
@@ -172,8 +164,8 @@ export default function Hero() {
               background: 'linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)',
             }}/>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

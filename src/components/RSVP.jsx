@@ -1,7 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    transition: { duration: 0.8, ease: [0.2, 0.8, 0.2, 1] } 
+  }
+};
 
 export default function RSVP() {
-  const ref = useRef(null);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -11,19 +29,6 @@ export default function RSVP() {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-      },
-      { threshold: 0.1 }
-    );
-    ref.current?.querySelectorAll('.section-reveal').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -37,7 +42,6 @@ export default function RSVP() {
   return (
     <section
       id="rsvp"
-      ref={ref}
       style={{
         background: 'linear-gradient(160deg, #3d2b1f 0%, #5a3e30 60%, #3d2b1f 100%)',
         padding: 'clamp(70px,10vw,120px) 20px',
@@ -64,26 +68,33 @@ export default function RSVP() {
         <circle cx="100" cy="100" r="18" fill="#c9a96e"/>
       </svg>
 
-      <div style={{ maxWidth: '640px', margin: '0 auto', position: 'relative' }}>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        style={{ maxWidth: '640px', margin: '0 auto', position: 'relative' }}
+      >
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <p className="section-reveal section-subtitle" style={{ color: 'rgba(201,169,110,0.6)', marginBottom: '12px' }}>
+          <motion.p variants={itemVariants} className="section-subtitle" style={{ color: 'rgba(201,169,110,0.6)', marginBottom: '12px' }}>
             Kindly reply by May 10, 2026
-          </p>
-          <h2
-            className="section-reveal section-title"
-            style={{ color: '#e8d5a3', transitionDelay: '0.1s' }}
+          </motion.p>
+          <motion.h2
+            variants={itemVariants}
+            className="section-title"
+            style={{ color: '#e8d5a3' }}
           >
             RSVP
-          </h2>
-          <div className="section-reveal ornament" style={{ marginTop: '20px', transitionDelay: '0.2s' }}>
+          </motion.h2>
+          <motion.div variants={itemVariants} className="ornament" style={{ marginTop: '20px' }}>
             <span style={{ color: '#c9a96e' }}>✦</span>
-          </div>
+          </motion.div>
         </div>
 
         {submitted ? (
-          <div
-            className="section-reveal visible"
+          <motion.div
+            variants={itemVariants}
             style={{
               textAlign: 'center',
               padding: '60px 40px',
@@ -124,16 +135,15 @@ export default function RSVP() {
             >
               — Akarsh &amp; Mariya
             </p>
-          </div>
+          </motion.div>
         ) : (
-          <form
+          <motion.form
+            variants={itemVariants}
             onSubmit={handleSubmit}
-            className="section-reveal"
             style={{
               background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(201,169,110,0.15)',
               padding: 'clamp(32px,6vw,56px)',
-              transitionDelay: '0.3s',
             }}
           >
             {/* Attendance toggle */}
@@ -226,9 +236,9 @@ export default function RSVP() {
                 </button>
               </div>
             </div>
-          </form>
+          </motion.form>
         )}
-      </div>
+      </motion.div>
     </section>
   );
 }

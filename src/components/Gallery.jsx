@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { galleryImages, outdoorImages, traditionalImages } from '../assets/images';
+import { motion } from 'framer-motion';
 
 // Group images by shoot
 const tabs = [
@@ -9,19 +10,27 @@ const tabs = [
   { label: 'Traditional', images: traditionalImages },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    transition: { duration: 0.8, ease: [0.2, 0.8, 0.2, 1] } 
+  }
+};
+
 export default function Gallery() {
-  const ref = useRef(null);
   const [activeTab, setActiveTab] = useState(0);
   const [lightbox, setLightbox] = useState(null); // { idx, images }
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')),
-      { threshold: 0.05 }
-    );
-    ref.current?.querySelectorAll('.section-reveal').forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
 
   const navigate = (dir) => {
     setLightbox(lb => {
@@ -46,24 +55,29 @@ export default function Gallery() {
   return (
     <section
       id="gallery"
-      ref={ref}
       style={{ background: 'linear-gradient(160deg,#f5ece0,#ede4d8)', padding: 'clamp(70px,10vw,120px) 20px' }}
     >
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        style={{ maxWidth: '1200px', margin: '0 auto' }}
+      >
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
-          <p className="section-reveal section-subtitle" style={{ marginBottom: '12px' }}>Memories</p>
-          <h2 className="section-reveal section-title" style={{ transitionDelay: '0.1s' }}>Our Gallery</h2>
-          <div className="section-reveal ornament" style={{ marginTop: '20px', transitionDelay: '0.2s' }}>
+          <motion.p variants={itemVariants} className="section-subtitle" style={{ marginBottom: '12px' }}>Memories</motion.p>
+          <motion.h2 variants={itemVariants} className="section-title">Our Gallery</motion.h2>
+          <motion.div variants={itemVariants} className="ornament" style={{ marginTop: '20px' }}>
             <span style={{ color: '#c9a96e' }}>✦</span>
-          </div>
+          </motion.div>
         </div>
 
         {/* Tab filters */}
-        <div
-          className="section-reveal"
-          style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginBottom: '40px', transitionDelay: '0.25s' }}
+        <motion.div
+          variants={itemVariants}
+          style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginBottom: '40px' }}
         >
           {tabs.map((tab, i) => (
             <button
@@ -89,20 +103,23 @@ export default function Gallery() {
               </span>
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* ── Masonry columns ── */}
-        <div
-          className="section-reveal"
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          key={activeTab} // Re-animate when tab changes
           style={{
             columns: 'clamp(2,3,3)',
             columnGap: '10px',
-            transitionDelay: '0.3s',
           }}
         >
           {images.map((img, i) => (
-            <div
+            <motion.div
               key={img.src + i}
+              variants={itemVariants}
               className="gallery-item"
               onClick={() => setLightbox({ idx: i, images })}
               style={{
@@ -147,9 +164,9 @@ export default function Gallery() {
                   ⊕
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Mobile: 2 columns override */}
         <style>{`
@@ -157,7 +174,7 @@ export default function Gallery() {
             section#gallery [style*="columns:"] { columns: 2 !important; }
           }
         `}</style>
-      </div>
+      </motion.div>
 
       {/* ── Lightbox ── */}
       {lightbox && (

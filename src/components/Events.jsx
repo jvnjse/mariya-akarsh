@@ -1,5 +1,23 @@
-import { useEffect, useRef } from 'react';
 import { MapPin, Clock, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    transition: { duration: 0.8, ease: [0.2, 0.8, 0.2, 1] } 
+  }
+};
 
 const events = [
   {
@@ -31,40 +49,28 @@ const events = [
 ];
 
 export default function Events() {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    ref.current?.querySelectorAll('.section-reveal').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
       id="events"
-      ref={ref}
       style={{
         background: 'linear-gradient(160deg, #f5ece0 0%, #ede4d8 100%)',
         padding: 'clamp(70px,10vw,120px) 20px',
       }}
     >
-      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        style={{ maxWidth: '1000px', margin: '0 auto' }}
+      >
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '70px' }}>
-          <p className="section-reveal section-subtitle" style={{ marginBottom: '12px' }}>Mark your calendar</p>
-          <h2 className="section-reveal section-title" style={{ transitionDelay: '0.1s' }}>The Events</h2>
-          <div className="section-reveal ornament" style={{ marginTop: '20px', transitionDelay: '0.2s' }}>
+          <motion.p variants={itemVariants} className="section-subtitle" style={{ marginBottom: '12px' }}>Mark your calendar</motion.p>
+          <motion.h2 variants={itemVariants} className="section-title">The Events</motion.h2>
+          <motion.div variants={itemVariants} className="ornament" style={{ marginTop: '20px' }}>
             <span style={{ color: '#c9a96e' }}>✦</span>
-          </div>
+          </motion.div>
         </div>
 
         {/* Cards */}
@@ -76,13 +82,12 @@ export default function Events() {
           }}
         >
           {events.map((event, i) => (
-            <div
+            <motion.div
               key={i}
-              className="section-reveal event-card"
-              style={{
-                transitionDelay: `${i * 0.2}s`,
-                overflow: 'hidden',
-              }}
+              variants={itemVariants}
+              className="event-card"
+              style={{ overflow: 'hidden' }}
+              whileHover={{ y: -4, boxShadow: '0 20px 60px rgba(0,0,0,0.1)' }}
             >
               {/* Top accent bar */}
               <div
@@ -196,17 +201,16 @@ export default function Events() {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Bottom note */}
-        <div
-          className="section-reveal"
+        <motion.div
+          variants={itemVariants}
           style={{
             textAlign: 'center',
             marginTop: '60px',
-            transitionDelay: '0.4s',
           }}
         >
           <p
@@ -220,8 +224,8 @@ export default function Events() {
           >
             We look forward to celebrating this special day with you.
           </p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

@@ -8,10 +8,12 @@ import Gallery from './components/Gallery';
 import RSVP from './components/RSVP';
 import Footer from './components/Footer';
 import Petals from './components/Petals';
+import AudioPlayer from './components/AudioPlayer';
 
 export default function App() {
   return (
     <>
+      <AudioPlayer />
       <Petals />
       <Navbar />
       <main>

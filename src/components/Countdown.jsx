@@ -1,4 +1,23 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    transition: { duration: 0.8, ease: [0.2, 0.8, 0.2, 1] } 
+  }
+};
 
 function useCountdown(targetDate) {
   const calc = () => {
@@ -61,26 +80,9 @@ function Box({ value, label }) {
 
 export default function Countdown() {
   const time = useCountdown('2026-05-27T00:00:00');
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          entry.target.querySelectorAll('.section-reveal').forEach((el, i) => {
-            setTimeout(() => el.classList.add('visible'), i * 150);
-          });
-        }
-      },
-      { threshold: 0.3 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <section
-      ref={ref}
       style={{
         background: 'linear-gradient(135deg, #3d2b1f 0%, #5a3e30 100%)',
         padding: 'clamp(60px,8vw,100px) 20px',
@@ -98,21 +100,28 @@ export default function Countdown() {
         </svg>
       </div>
 
-      <div style={{ maxWidth: '900px', margin: '0 auto', position: 'relative', textAlign: 'center' }}>
-        <div className="section-reveal" style={{ marginBottom: '16px' }}>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        style={{ maxWidth: '900px', margin: '0 auto', position: 'relative', textAlign: 'center' }}
+      >
+        <motion.div variants={itemVariants} style={{ marginBottom: '16px' }}>
           <p className="section-subtitle" style={{ color: 'rgba(201,169,110,0.7)' }}>The big day</p>
-        </div>
-        <div className="section-reveal" style={{ marginBottom: '48px' }}>
+        </motion.div>
+        
+        <motion.div variants={itemVariants} style={{ marginBottom: '48px' }}>
           <h2
             className="section-title"
             style={{ color: '#e8d5a3', fontSize: 'clamp(2.5rem,6vw,4rem)' }}
           >
             Counting Down
           </h2>
-        </div>
+        </motion.div>
 
-        <div
-          className="section-reveal"
+        <motion.div
+          variants={itemVariants}
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -127,9 +136,9 @@ export default function Countdown() {
           <Box value={time.minutes} label="Minutes" />
           <div style={{ display: 'flex', alignItems: 'center', color: 'rgba(201,169,110,0.5)', fontSize: '2rem', fontWeight: 300 }}>:</div>
           <Box value={time.seconds} label="Seconds" />
-        </div>
+        </motion.div>
 
-        <div className="section-reveal" style={{ marginTop: '40px' }}>
+        <motion.div variants={itemVariants} style={{ marginTop: '40px' }}>
           <p
             style={{
               fontFamily: "'Cormorant Garamond', serif",
@@ -141,8 +150,8 @@ export default function Countdown() {
           >
             "Two souls, one heart"
           </p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
