@@ -8,7 +8,7 @@ const allImages = Object.entries(modules)
 
 // ── Batches by shoot date ─────────────────────────────────────────────────────
 export const traditionalImages = allImages.filter(i => i.alt.includes('9.21') || i.alt.includes('9.48'));
-export const outdoorImages     = allImages.filter(i => i.alt.includes('9.02'));
+export const outdoorImages     = allImages.filter(i => i.alt.includes('9.02') || i.alt.includes('7.47')) ;
 
 // Specific picks for hero / featured spots (by stable index within sorted list)
 export const heroImage   = outdoorImages[0];   // river walk

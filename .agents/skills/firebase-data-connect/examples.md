@@ -556,7 +556,7 @@ mutation CreateMovieCTE($movieId: UUID!, $userUid: String!, $reviewId: UUID!) @a
       ),
       movie AS (
         INSERT INTO movie (id, title, poster_url, release_year, genre)
-        VALUES ($1, 'Auto-Generated Movie', 'https://placeholder.com', 2025, 'Sci-Fi')
+        VALUES ($1, 'Auto-Generated Movie', 'https://placeholder.com', 2026, 'Sci-Fi')
         ON CONFLICT (id) DO NOTHING
         RETURNING id
       )

@@ -68,7 +68,7 @@ export default function RSVP() {
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '56px' }}>
           <p className="section-reveal section-subtitle" style={{ color: 'rgba(201,169,110,0.6)', marginBottom: '12px' }}>
-            Kindly reply by May 10, 2025
+            Kindly reply by May 10, 2026
           </p>
           <h2
             className="section-reveal section-title"

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import logoImg from '../assets/logo.png';
 
-const links = ['Home', 'Our Story', 'Events', 'Gallery', 'RSVP'];
+const links = ['Home', 'Our Story', 'Events', 'Gallery'];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);

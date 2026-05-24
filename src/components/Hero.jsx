@@ -23,11 +23,11 @@ export default function Hero() {
     >
       {/* ── Full-bleed background photo ── */}
       <div
+        className="hero-bg-image"
         style={{
           position: 'absolute', inset: 0,
           backgroundImage: bgPhoto ? `url(${bgPhoto})` : 'none',
           backgroundSize: 'cover',
-          backgroundPosition: 'center top',
           transform: 'scale(1.05)',
           transition: 'transform 8s ease-out',
         }}
@@ -136,7 +136,7 @@ export default function Hero() {
             fontWeight: 300,
             marginBottom: '6px',
           }}>
-            Tuesday, the 27th of May, 2025
+            Tuesday, the 27th of May, 2026
           </p>
           <p style={{
             fontFamily: "'Montserrat', sans-serif",

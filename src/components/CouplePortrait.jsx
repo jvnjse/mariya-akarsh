@@ -17,7 +17,7 @@ export default function CouplePortrait() {
   const featured = [
     outdoorImages[4],   // intimate/leaning
     traditionalImages[0], // traditional attire church door
-    outdoorImages[7],   // dancing by lake
+    outdoorImages[18],   // dancing by lake
   ].filter(Boolean);
 
   return (

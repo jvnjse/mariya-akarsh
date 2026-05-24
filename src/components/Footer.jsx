@@ -47,7 +47,7 @@ export default function Footer() {
           marginBottom: '32px',
         }}
       >
-        May 27, 2025
+        May 27, 2026
       </p>
 
       {/* Quote */}
@@ -78,7 +78,7 @@ export default function Footer() {
           marginBottom: '40px',
         }}
       >
-        {['Home', 'Our Story', 'Events', 'Gallery', 'RSVP'].map((link) => (
+        {['Home', 'Our Story', 'Events', 'Gallery'].map((link) => (
           <button
             key={link}
             onClick={() => {
@@ -115,7 +115,7 @@ export default function Footer() {
           textTransform: 'uppercase',
         }}
       >
-        Made with ♥ for Akarsh &amp; Mariya · 2025
+        Made with ♥ for Akarsh &amp; Mariya · 2026
       </p>
     </footer>
   );

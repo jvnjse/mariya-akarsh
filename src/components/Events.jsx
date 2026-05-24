@@ -5,23 +5,27 @@ const events = [
   {
     type: 'Ceremony',
     icon: '💍',
-    date: 'May 27, 2025',
+    date: 'May 27, 2026',
     time: '11:00 AM',
-    venue: 'St. Mary\'s Cathedral',
-    address: '123 Church Lane, The City',
+    venue: "ST. MARY'S FORANE CHURCH",
+    address: 'Theekoy, Kerala, India',
+    mapLink: 'https://maps.app.goo.gl/75XKXwCCh47rFARQ6',
+    iframeSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4065.9126517372492!2d76.80618707517617!3d9.700496390390132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b07ca6f531f0123%3A0xb1d903aeeb2c1fb7!2sSt.%20Mary%27s%20Forane%20Church%2C%20Teekoy!5e1!3m2!1sen!2sin!4v1779632955280!5m2!1sen!2sin',
     description: 'The ceremony where two become one. Join us as we exchange our vows before God and our loved ones in an intimate and sacred setting.',
-    dress: 'Formal Attire',
+    // dress: 'Formal Attire',
     color: '#c9a96e',
   },
   {
     type: 'Reception',
     icon: '🥂',
-    date: 'May 27, 2025',
-    time: '7:00 PM',
-    venue: 'The Grand Ballroom',
-    address: '456 Elegance Avenue, The City',
+    date: 'May 27, 2026',
+    time: '12.30 PM',
+    venue: "ST. MARY'S FORANE PARISH HALL",
+    address: 'Theekoy, Kerala, India',
+    mapLink: 'https://maps.app.goo.gl/cuxw4SKG5PVSca748',
+    iframeSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d679.1521704844924!2d76.80872404943598!3d9.701080316612058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b07cb005aca4cc5%3A0x73fe789f132113ef!2sSt.%20Mary%27s%20Parish%20Hall%2C%20Teekoy!5e1!3m2!1sen!2sin!4v1779632840600!5m2!1sen!2sin',
     description: 'Celebrate with us over an evening of fine dining, dancing, and joyful memories. A night filled with love, laughter, and cherished moments.',
-    dress: 'Black Tie Optional',
+    // dress: 'Black Tie Optional',
     color: '#8a5a2a',
   },
 ];
@@ -114,10 +118,30 @@ export default function Events() {
                   <InfoRow
                     icon={<MapPin size={14} color={event.color}/>}
                     text={
-                      <span>
-                        <strong>{event.venue}</strong><br />
-                        <span style={{ color: '#8a7060', fontWeight: 300 }}>{event.address}</span>
-                      </span>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        <div>
+                          <strong>{event.venue}</strong><br />
+                          <span style={{ color: '#8a7060', fontWeight: 300 }}>{event.address}</span>
+                        </div>
+                        {event.mapLink && (
+                          <a
+                            href={event.mapLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              color: event.color,
+                              fontSize: '0.8rem',
+                              fontFamily: "'Montserrat', sans-serif",
+                              textDecoration: 'underline',
+                              textUnderlineOffset: '3px',
+                              display: 'inline-block',
+                              marginTop: '2px'
+                            }}
+                          >
+                            View on Map
+                          </a>
+                        )}
+                      </div>
                     }
                   />
                 </div>
@@ -141,7 +165,7 @@ export default function Events() {
                 </p>
 
                 {/* Dress code */}
-                <div
+                {/* <div
                   style={{
                     display: 'inline-block',
                     padding: '6px 16px',
@@ -154,7 +178,23 @@ export default function Events() {
                   }}
                 >
                   {event.dress}
-                </div>
+                </div> */}
+
+                {/* Map Iframe */}
+                {event.iframeSrc && (
+                  <div style={{ marginTop: '24px', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${event.color}40` }}>
+                    <iframe
+                      src={event.iframeSrc}
+                      width="100%"
+                      height="250"
+                      style={{ border: 0, display: 'block' }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      // title={`${event.type} Location`}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ))}

@@ -2,34 +2,22 @@ import { useEffect, useRef } from 'react';
 
 const story = [
   {
-    year: '2021',
-    title: 'First Meeting',
-    desc: 'Our eyes met across a crowded room at a mutual friend\'s gathering. A simple introduction turned into hours of conversation that neither of us wanted to end.',
-    icon: '✦',
-  },
-  {
-    year: '2022',
-    title: 'First Date',
-    desc: 'A quiet evening at a little restaurant in the city. We talked until they asked us to leave, then continued our walk under the stars.',
-    icon: '✦',
-  },
-  {
-    year: '2023',
-    title: 'Fell in Love',
-    desc: 'Through every season, every journey, every ordinary and extraordinary moment — we realized we were exactly where we were meant to be.',
-    icon: '✦',
-  },
-  {
-    year: '2024',
-    title: 'The Proposal',
-    desc: 'At sunset, with flowers and a heart full of promise, Akarsh asked the question that would change everything. And Mariya said yes.',
+    year: 'September 2025',
+    title: 'The Fixation Ceremony',
+    desc: 'As the sun melted into the evening sky, surrounded by flowers, laughter, and the warmth of family, Akarsh held Mariya’s hand and asked the question that changed their forever. With a smile full of love, she said “Yes.”',
     icon: '♥',
   },
   {
-    year: '2025',
-    title: 'Forever Begins',
-    desc: 'On May 27th, surrounded by the people we love most, we begin our greatest adventure yet.',
+    year: 'May 2026',
+    title: 'The Engagement',
+    desc: 'A beautiful celebration of two hearts becoming one. On May 10th, amidst sparkling lights, happy tears, and endless blessings, Akarsh & Mariya officially began the next chapter of their love story.',
     icon: '✦',
+  },
+  {
+    year: '2026',
+    title: 'The Wedding Day',
+    desc: 'The day destiny turns into forever. Surrounded by loved ones, sacred vows, and unforgettable moments, Akarsh & Mariya step into a lifetime filled with love, togetherness, and endless memories.',
+    icon: '❀',
   },
 ];
 
